@@ -34,7 +34,10 @@ export function MenuShowcase() {
     scrub: 0.5,
     onUpdate: (p) => {
       ref.current?.style.setProperty('--p', p.toFixed(4));
-      if (track.current) track.current.style.transform = `translate3d(${-p * distance}px,0,0)`;
+      const t = track.current;
+      if (!t) return;
+      t.style.transform = `translate3d(${-p * distance}px,0,0)`;
+      coverflow(t, -p * distance);
     },
   });
 
@@ -42,14 +45,14 @@ export function MenuShowcase() {
     <section id="showcase" ref={ref} aria-labelledby="showcase-title" className="relative bg-charcoal-950" style={{ height: pinned ? `calc(100vh + ${distance}px)` : undefined }}>
       <div className={`${pinned ? 'sticky top-0 h-screen-s' : 'relative py-24'} flex flex-col justify-center overflow-hidden`}>
         <div className="container-x mb-8 flex items-end justify-between gap-6 md:mb-12">
-          <h2 id="showcase-title" className="display text-[clamp(2rem,4.5vw,3.6rem)]">
+          <h2 id="showcase-title" data-reveal="deep" className="display text-[clamp(2rem,4.5vw,3.6rem)]">
             From the counter
           </h2>
           <a href="#menu" className="hidden text-[13px] font-medium text-washi-50/70 underline decoration-vermilion-600 underline-offset-4 hover:text-washi-50 md:inline" data-cta="see_menu" data-cta-location="showcase">
             Full menu
           </a>
         </div>
-        <ul ref={track} className={`flex gap-5 px-[var(--gutter)] will-change-transform md:gap-8 ${pinned ? '' : 'snap-x snap-mandatory overflow-x-auto pb-4'}`}>
+        <ul ref={track} style={{ perspective: '1600px', transformStyle: 'preserve-3d' }} className={`flex gap-5 px-[var(--gutter)] will-change-transform md:gap-8 ${pinned ? '' : 'snap-x snap-mandatory overflow-x-auto pb-4'}`}>
           <BowlCard />
           {featured.map((item, i) => (
             <li key={item.id} className="group relative flex w-[78vw] max-w-[440px] shrink-0 snap-center flex-col rounded-[28px] border border-washi-50/10 bg-charcoal-800/60 p-6 md:w-[34vw] md:p-8">
@@ -83,4 +86,18 @@ export function MenuShowcase() {
       </div>
     </section>
   );
+}
+
+/**
+ * Coverflow: each card swings in 3D by its distance from the viewport centre, so cards turn to face the
+ * reader as they slide through the middle and fall back in depth either side.
+ */
+function coverflow(track: HTMLElement, offset: number) {
+  const mid = window.innerWidth / 2;
+  for (const card of Array.from(track.children) as HTMLElement[]) {
+    const c = card.offsetLeft + offset + card.offsetWidth / 2;
+    const d = Math.max(-1.4, Math.min(1.4, (c - mid) / window.innerWidth));
+    card.style.transform = `perspective(1400px) translateZ(${-Math.abs(d) * 260}px) rotateY(${-d * 42}deg) translateY(${Math.abs(d) * 24}px)`;
+    card.style.opacity = String(1 - Math.min(0.55, Math.abs(d) * 0.45));
+  }
 }

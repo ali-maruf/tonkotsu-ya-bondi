@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { initCtaTracking } from './lib/analytics';
 import { useMotion } from './lib/motion';
 import { initSmoothScroll, scrollToHash } from './lib/scroll';
+import { initReveals } from './lib/reveal';
 import { tokens } from './lib/tokens';
 import { Preloader } from './components/chapters/Preloader';
 import { Hero } from './components/chapters/Hero';
@@ -23,6 +24,7 @@ export default function App() {
 
   useEffect(() => initCtaTracking(), []);
   useEffect(() => (tier === 'static' ? undefined : initSmoothScroll()), [tier]);
+  useEffect(() => (tier === 'static' ? undefined : initReveals()), [tier]);
 
   // In-page anchors go through Lenis so they glide instead of jumping.
   useEffect(() => {

@@ -21,7 +21,7 @@ export function FindUs() {
       <div className="container-x grid gap-14 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <ChapterHeading n="07" label="Find us" jp="地図" />
-          <h2 id="find-title" className="display mt-5 text-[clamp(2.2rem,5vw,4.2rem)]">
+          <h2 id="find-title" data-reveal="deep" className="display mt-5 text-[clamp(2.2rem,5vw,4.2rem)]">
             Inside
             <br />
             Eastgate.
@@ -31,7 +31,7 @@ export function FindUs() {
           </address>
           <OpenStatusPill className="mt-5 text-washi-50/80" />
 
-          <table className="mt-8 w-full max-w-sm text-[14px]">
+          <table data-reveal className="mt-8 w-full max-w-sm text-[14px]">
             <caption className="label mb-3 text-left text-washi-50/60">Opening hours (Sydney time)</caption>
             <tbody>
               {DAY_KEYS.map((d) => {
@@ -82,7 +82,7 @@ export function FindUs() {
 /** Minimal 3D cue of the centre (schematic, not to scale) with a pulsing pin. */
 function Floorplan() {
   return (
-    <figure className="relative">
+    <figure data-reveal="card" data-reveal-i="1" className="relative">
       <div className="relative aspect-[16/10] overflow-hidden rounded-[28px] border border-washi-50/10 bg-[radial-gradient(ellipse_at_center,#262626,#141414_70%)]" style={{ perspective: '1100px' }}>
         <div
           className="absolute left-1/2 top-1/2 h-[78%] w-[70%]"
@@ -133,7 +133,7 @@ function LazyMap() {
   const ref = useRef<HTMLDivElement>(null);
   const show = useInView(ref, '200px 0px', true);
   return (
-    <div ref={ref} className="relative aspect-[16/9] overflow-hidden rounded-[28px] border border-washi-50/10 bg-charcoal-800">
+    <div ref={ref} data-reveal="card" data-reveal-i="2" className="relative aspect-[16/9] overflow-hidden rounded-[28px] border border-washi-50/10 bg-charcoal-800">
       {show ? (
         <iframe
           title="Map of Eastgate Shopping Centre, Bondi Junction"

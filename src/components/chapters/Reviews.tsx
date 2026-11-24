@@ -11,7 +11,7 @@ export function Reviews() {
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <ChapterHeading n="08" label="Reviews" jp="声" />
-            <h2 id="reviews-title" className="display mt-5 text-[clamp(2.2rem,5vw,4.2rem)]">
+            <h2 id="reviews-title" data-reveal="deep" className="display mt-5 text-[clamp(2.2rem,5vw,4.2rem)]">
               Word at the counter.
             </h2>
           </div>
@@ -26,8 +26,8 @@ export function Reviews() {
         </div>
 
         <ul className="-mx-[var(--gutter)] mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[var(--gutter)] pb-4 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 lg:grid-cols-5">
-          {reviews.reviews.map((r) => (
-            <li key={r.id} className="flex w-[80vw] max-w-sm shrink-0 snap-center flex-col rounded-3xl border border-washi-50/10 bg-charcoal-800/50 p-6 md:w-auto">
+          {reviews.reviews.map((r, i) => (
+            <li key={r.id} data-reveal="card" data-reveal-i={i} className="flex w-[80vw] max-w-sm shrink-0 snap-center flex-col rounded-3xl border border-washi-50/10 bg-charcoal-800/50 p-6 md:w-auto">
               <span aria-hidden="true" className="font-display text-5xl leading-none text-vermilion-600">
                 “
               </span>

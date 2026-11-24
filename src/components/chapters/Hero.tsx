@@ -1,88 +1,60 @@
-import { useMemo, useRef } from 'react';
-import { SCENES, pickSrc } from '../../lib/media';
+import { useRef } from 'react';
+import { HERO_FRAMES, SCENES } from '../../lib/media';
 import { useMotion } from '../../lib/motion';
 import { useScrollProgress } from '../../lib/scroll';
-import { tokens } from '../../lib/tokens';
 import { CssNoren } from '../ui/CssNoren';
+import { FilmStage } from '../ui/FilmStage';
 import { OrderLink } from '../ui/OrderLink';
 import { PhotoPoster } from '../ui/PhotoPoster';
-import { Stage } from '../ui/Stage';
-import type { PhotoSceneProps } from '../three/PhotoScene';
-
-const loadPhoto = () => import('../three/PhotoScene');
-
-const isPortrait = () => window.innerWidth / window.innerHeight < 0.8;
-
-function heroShot(portrait: boolean): Omit<PhotoSceneProps, 'background'> {
-  if (portrait) {
-    const s = SCENES.heroPortrait;
-    return {
-      image: pickSrc(s),
-      imageAspect: s.aspect,
-      path: [
-        { at: 0, zoom: 1.0, center: [0.5, 0.5] },
-        { at: 0.55, zoom: 1.14, center: [0.5, 0.62] },
-        { at: 1, zoom: 1.16, center: [0.5, 0.64] },
-      ],
-      steam: { rect: [0.25, 0.56, 0.75, 0.66], count: 900, rise: 0.4 },
-      wordmark: { text: 'TONKOTSU YA', center: [0.5, 0.42], width: 0.52, range: [0.82, 1] },
-      noren: { color: tokens.vermilion600, ink: tokens.washi50, glyphs: ['豚骨', 'ラーメン'], range: [0, 0.14] },
-      vignette: 0.3,
-    };
-  }
-  const s = SCENES.hero;
-  return {
-    image: pickSrc(s),
-    imageAspect: s.aspect,
-    depth: s.depth,
-    focus: 0.55,
-    pointerParallax: 0.022,
-    path: [
-      { at: 0, zoom: 1.04, center: [0.5, 0.5], drift: [0, 0] },
-      { at: 0.5, zoom: 1.1, center: [0.58, 0.5], drift: [0.012, 0.004] },
-      { at: 1, zoom: 1.16, center: [0.64, 0.47], drift: [-0.014, 0.008] },
-    ],
-    steam: { rect: [0.5, 0.3, 0.88, 0.46], count: 1500, rise: 0.42 },
-    wordmark: { text: 'TONKOTSU YA', center: [0.7, 0.2], width: 0.25, range: [0.8, 1] },
-    noren: { color: tokens.vermilion600, ink: tokens.washi50, glyphs: ['豚骨', 'ラーメン'], range: [0, 0.14] },
-    vignette: 0.35,
-  };
-}
 
 /**
- * Chapter 1 (pinned ~260vh): the noren parts onto a real bowl. Scrolling dollies the camera in with
- * depth parallax while steam rises and finally gathers into the wordmark above the bowl.
+ * Chapter 1 (pinned ~280vh): the noren swings open in 3D onto a real bowl, then scrolling drives a
+ * Higgsfield camera orbit around it (video frames scrubbed forwards and backwards). The headline tips
+ * back into depth as the camera moves in, and the wordmark flies forward out of the steam at the end.
  */
 export function Hero() {
   const { tier } = useMotion();
   const pinned = tier !== 'static';
   const ref = useRef<HTMLElement>(null);
-  const shot = useMemo(() => heroShot(isPortrait()), []);
-  const progress = useScrollProgress(ref, {
+  const film = useRef({ value: 0 });
+  useScrollProgress(ref, {
     enabled: pinned,
     onUpdate: (p) => {
       const el = ref.current;
       if (!el) return;
       el.style.setProperty('--p', p.toFixed(4));
       el.style.setProperty('--o', Math.min(1, p / 0.14).toFixed(4));
+      film.current.value = Math.min(1, Math.max(0, (p - 0.06) / 0.9));
     },
   });
 
   return (
-    <section id="top" ref={ref} aria-label="Tonkotsu Ya, Bondi Junction" className="relative bg-charcoal-950" style={{ height: pinned ? '260vh' : undefined }}>
-      <div className="sticky top-0 h-screen-s overflow-hidden">
-        <Stage<PhotoSceneProps>
-          load={loadPhoto}
-          progress={progress}
-          idle
-          sceneProps={{ ...shot, background: tokens.charcoal950 }}
-          poster={<PhotoPoster scene={SCENES.hero} portrait={SCENES.heroPortrait} position="65% 50%" priority />}
-          curtain={(ready) => <CssNoren glyphs={['豚骨', 'ラーメン']} hidden={ready} />}
-        />
+    <section id="top" ref={ref} aria-label="Tonkotsu Ya, Bondi Junction" className="relative bg-charcoal-950" style={{ height: pinned ? '280vh' : undefined }}>
+      <div className="sticky top-0 h-screen-s overflow-hidden" style={{ perspective: '1000px' }}>
+        <FilmStage frames={HERO_FRAMES} progress={film.current} enabled={pinned} focusX={0.62} poster={<PhotoPoster scene={SCENES.hero} portrait={SCENES.heroPortrait} position="65% 50%" priority />} />
+        {pinned && <CssNoren glyphs={['豚骨', 'ラーメン']} />}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgb(20_20_20/0.7),transparent_32%,transparent_60%,rgb(20_20_20/0.85))] md:bg-[linear-gradient(90deg,rgb(20_20_20/0.85),rgb(20_20_20/0.3)_42%,transparent_60%),linear-gradient(0deg,rgb(20_20_20/0.6),transparent_30%)]" />
 
+        {pinned && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-[calc(var(--header-h)+6vh)] z-[4] flex justify-center md:top-[12vh] md:justify-end md:pr-[8vw]" style={{ perspective: '900px' }}>
+            <p
+              className="font-display text-[clamp(2.6rem,9vw,8rem)] font-extrabold leading-none tracking-tight text-washi-50 [text-shadow:0_20px_60px_rgb(0_0_0/0.6)]"
+              style={{
+                opacity: 'clamp(0, (var(--p, 0) - 0.72) * 5, 1)',
+                transform: 'translateZ(calc((1 - clamp(0, (var(--p, 0) - 0.72) * 3.6, 1)) * -900px)) rotateX(calc((1 - clamp(0, (var(--p, 0) - 0.72) * 3.6, 1)) * 40deg))',
+                filter: 'blur(calc((1 - clamp(0, (var(--p, 0) - 0.72) * 3.6, 1)) * 10px))',
+              }}
+            >
+              TONKOTSU YA
+            </p>
+          </div>
+        )}
+
         <div className="container-x relative z-10 flex h-full flex-col justify-between pb-[calc(var(--bottom-bar-h)+20px)] pt-[calc(var(--header-h)+28px)] md:justify-end md:pb-16">
-          <div className="hero-copy max-w-[44rem]">
+          <div
+            className="hero-copy max-w-[44rem]"
+            style={pinned ? { transformOrigin: '0% 100%', transform: 'translateZ(calc(var(--p, 0) * -260px)) rotateY(calc(var(--p, 0) * 14deg)) rotateX(calc(var(--p, 0) * 10deg))', opacity: 'calc(1 - max(0, var(--p, 0) - 0.55) * 3)' } : undefined}
+          >
             <p className="label text-vermilion-400">Eastgate · Bondi Junction</p>
             <h1 className="display mt-4 text-[clamp(2.6rem,5.4vw,5rem)]">
               Rich tonkotsu.
@@ -106,7 +78,6 @@ export function Hero() {
           </div>
         )}
       </div>
-      <style>{`@media (max-width: 767px){ #top .hero-copy{ opacity: calc(1 - max(0, var(--p, 0) - 0.8) * 7); } }`}</style>
     </section>
   );
 }

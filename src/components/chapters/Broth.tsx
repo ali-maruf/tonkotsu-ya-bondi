@@ -1,57 +1,32 @@
-import { useMemo, useRef, useState, type RefObject } from 'react';
+import { useRef, useState, type RefObject } from 'react';
 import { useMotion } from '../../lib/motion';
 import { isPlaceholder } from '../../lib/placeholder';
 import { useScrollProgress } from '../../lib/scroll';
 import { site } from '../../lib/site';
 import { ChapterHeading } from '../ui/ChapterHeading';
+import { CssNoren } from '../ui/CssNoren';
+import { FilmStage } from '../ui/FilmStage';
 import { Ph } from '../ui/Ph';
-import { Stage } from '../ui/Stage';
 import { BrothPoster } from './posters';
-import { SCENES, pickSrc } from '../../lib/media';
-import { tokens } from '../../lib/tokens';
-import type { PhotoSceneProps } from '../three/PhotoScene';
+import { BROTH_FRAMES } from '../../lib/media';
 
-const loadPhoto = () => import('../three/PhotoScene');
 const PHASES = ['Bones', 'Simmer', 'Milky'];
-
-const brothShot = (): PhotoSceneProps => ({
-  image: pickSrc(SCENES.broth),
-  imageAspect: SCENES.broth.aspect,
-  depth: SCENES.broth.depth,
-  focus: 0.6,
-  pointerParallax: 0.02,
-  path:
-    window.innerWidth / window.innerHeight < 0.8
-      ? [
-          { at: 0, zoom: 1.0, center: [0.72, 0.55] },
-          { at: 1, zoom: 1.08, center: [0.72, 0.45], drift: [0.006, 0.006] },
-        ]
-      : [
-          { at: 0, zoom: 1.04, center: [0.5, 0.5], drift: [0, 0] },
-          { at: 0.5, zoom: 1.14, center: [0.68, 0.44], drift: [0.01, -0.006] },
-          { at: 1, zoom: 1.26, center: [0.7, 0.36], drift: [-0.012, 0.01] },
-        ],
-  steam: { rect: [0.47, 0.17, 0.95, 0.3], count: 1100, rise: 0.55, size: 1.3, strength: 1.4 },
-  shimmer: [0.45, 0.0, 0.98, 0.25],
-  noren: { color: tokens.vermilion600, ink: tokens.washi50, glyphs: ['出汁', '豚骨'], range: [0, 0.12] },
-  vignette: 0.4,
-  background: tokens.charcoal950,
-});
 const HOURS = isPlaceholder(site.brothHours) ? null : Number(site.brothHours);
 
-/** Chapter 2: the long simmer. A cutaway stockpot turns from clear to milky as the clock sweeps (pinned ~200vh). */
+/** Chapter 2 (pinned ~220vh): the long simmer. A Higgsfield crane shot rises over the boiling stockpot as you scroll, while the clock sweeps. */
 export function Broth() {
   const { tier } = useMotion();
   const pinned = tier !== 'static';
   const ref = useRef<HTMLElement>(null);
-  // stable props: the scene rebuilds its materials when these change
-  const shot = useMemo(brothShot, []);
+  const film = useRef({ value: 0 });
   const hourRef = useRef<HTMLSpanElement>(null);
   const [phase, setPhase] = useState(pinned ? 0 : 2);
-  const progress = useScrollProgress(ref, {
+  useScrollProgress(ref, {
     enabled: pinned,
     onUpdate: (p) => {
       ref.current?.style.setProperty('--p', p.toFixed(4));
+      ref.current?.style.setProperty('--o', Math.min(1, p / 0.12).toFixed(4));
+      film.current.value = Math.min(1, Math.max(0, (p - 0.05) / 0.92));
       setPhase(p < 0.4 ? 0 : p < 0.75 ? 1 : 2);
       if (hourRef.current && HOURS) hourRef.current.textContent = String(Math.round(Math.min(1, p / 0.9) * HOURS)).padStart(2, '0');
     },
@@ -59,11 +34,12 @@ export function Broth() {
 
   return (
     <section id="broth" ref={ref} aria-labelledby="broth-title" className="relative bg-charcoal-950" style={{ height: pinned ? '220vh' : undefined }}>
-      <div className={`${pinned ? 'sticky top-0' : 'relative'} h-screen-s overflow-hidden`}>
-        <Stage<PhotoSceneProps> load={loadPhoto} progress={progress} sceneProps={shot} poster={<BrothPoster />} />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgb(20_20_20/0.92),rgb(20_20_20/0.55)_38%,transparent_55%,rgb(20_20_20/0.85))] md:bg-[linear-gradient(90deg,rgb(20_20_20/0.85),transparent_45%)]" />
+      <div className={`${pinned ? 'sticky top-0' : 'relative'} h-screen-s overflow-hidden`} style={{ perspective: '1000px' }}>
+        <FilmStage frames={BROTH_FRAMES} progress={film.current} enabled={pinned} focusX={0.48} poster={<BrothPoster />} />
+        {pinned && <CssNoren glyphs={['出汁', '豚骨']} />}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgb(20_20_20/0.92),rgb(20_20_20/0.55)_38%,transparent_55%,rgb(20_20_20/0.85))] md:bg-[linear-gradient(90deg,rgb(20_20_20/0.85),transparent_45%,transparent_62%,rgb(20_20_20/0.8)),linear-gradient(0deg,rgb(20_20_20/0.5),transparent_30%)]" />
         <div className="container-x relative z-10 flex h-full flex-col justify-between pb-[calc(var(--bottom-bar-h)+20px)] pt-[calc(var(--header-h)+24px)] md:flex-row md:items-center md:pb-0 md:pt-0">
-          <div className="max-w-md">
+          <div className="max-w-md" style={pinned ? { transform: 'translateZ(calc((1 - min(1, var(--p, 0) * 4)) * -400px)) rotateX(calc((1 - min(1, var(--p, 0) * 4)) * 30deg))', opacity: 'min(1, var(--p, 0) * 5 - 0.3)' } : undefined}>
             <ChapterHeading n="02" label="The broth" jp="出汁" />
             <h2 id="broth-title" className="display mt-5 text-[clamp(2.2rem,5.5vw,4.6rem)]">
               Bones, water

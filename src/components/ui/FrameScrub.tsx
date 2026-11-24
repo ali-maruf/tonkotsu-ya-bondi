@@ -12,6 +12,9 @@ export function FrameScrub({ dir, count, aspect, progress, focusX = 0.5, onReady
   const canvas = useRef<HTMLCanvasElement>(null);
   const near = useInView(wrap, '150% 0px', true);
   const frames = useRef<(HTMLImageElement | null)[]>([]);
+  // kept in a ref so a new callback identity doesn't restart loading
+  const readyCb = useRef(onReady);
+  readyCb.current = onReady;
 
   useEffect(() => {
     if (!near) return;
@@ -31,7 +34,7 @@ export function FrameScrub({ dir, count, aspect, progress, focusX = 0.5, onReady
         frames.current[i] = img;
         if (!readySent && i === 0) {
           readySent = true;
-          onReady?.();
+          readyCb.current?.();
         }
         loadNext();
       };
@@ -41,7 +44,7 @@ export function FrameScrub({ dir, count, aspect, progress, focusX = 0.5, onReady
     return () => {
       cancelled = true;
     };
-  }, [near, dir, count, onReady]);
+  }, [near, dir, count]);
 
   useEffect(() => {
     if (!near) return;

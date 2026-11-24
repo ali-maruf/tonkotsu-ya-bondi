@@ -31,7 +31,7 @@ export function MenuExplorer() {
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="label text-vermilion-600">06 · Menu</p>
-            <h2 id="menu-title" className="display mt-4 text-[clamp(2.2rem,5vw,4.2rem)]">
+            <h2 id="menu-title" data-reveal="deep" className="display mt-4 text-[clamp(2.2rem,5vw,4.2rem)]">
               The menu
             </h2>
           </div>
@@ -40,7 +40,7 @@ export function MenuExplorer() {
           </p>
         </div>
 
-        <div role="tablist" aria-label="Menu categories" onKeyDown={onKey} className="-mx-[var(--gutter)] mt-10 flex gap-2 overflow-x-auto px-[var(--gutter)] pb-2 md:mx-0 md:px-0">
+        <div data-reveal role="tablist" aria-label="Menu categories" onKeyDown={onKey} className="-mx-[var(--gutter)] mt-10 flex gap-2 overflow-x-auto px-[var(--gutter)] pb-2 md:mx-0 md:px-0">
           {categories.map((c, i) => (
             <button
               key={c.id}
@@ -61,7 +61,7 @@ export function MenuExplorer() {
           ))}
         </div>
 
-        <div className="relative mt-10">
+        <div data-reveal className="relative mt-10">
           {categories.map((c, i) => (
             <div
               key={c.id}
