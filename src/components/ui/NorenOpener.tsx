@@ -4,16 +4,12 @@ import { useScrollProgress } from '../../lib/scroll';
 import { tokens } from '../../lib/tokens';
 import { CssNoren } from './CssNoren';
 import { Hanko } from './Brand';
-import { Stage } from './Stage';
-import type { NorenOpenerProps } from '../three/NorenOpenerScene';
 
-const loadOpener = () => import('../three/NorenOpenerScene');
-
-/** Chapter opener band: a noren parts on scroll to reveal the chapter title. */
+/** Chapter opener band: a CSS 3D noren swings open on scroll to reveal the chapter title. */
 export function NorenOpener({ n, title, jp, glyphs, color = tokens.vermilion600, ink = tokens.washi50, tone = 'dark' }: { n: string; title: string; jp: string; glyphs: [string, string]; color?: string; ink?: string; tone?: 'dark' | 'light' }) {
   const { tier } = useMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const progress = useScrollProgress(ref, {
+  useScrollProgress(ref, {
     start: 'top 75%',
     end: 'center 45%',
     enabled: tier !== 'static',
@@ -30,12 +26,7 @@ export function NorenOpener({ n, title, jp, glyphs, color = tokens.vermilion600,
           {jp}
         </span>
       </div>
-      <Stage<NorenOpenerProps>
-        load={loadOpener}
-        progress={progress}
-        sceneProps={{ color, ink, glyphs }}
-        curtain={(ready) => <CssNoren color={color} ink={ink} glyphs={glyphs} hidden={ready} />}
-      />
+      {tier !== 'static' && <CssNoren color={color} ink={ink} glyphs={glyphs} />}
     </div>
   );
 }

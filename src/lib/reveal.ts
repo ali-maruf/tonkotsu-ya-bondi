@@ -1,11 +1,11 @@
 import { gsap, ScrollTrigger } from './scroll';
 
 /**
- * Scroll-scrubbed 3D reveals for every `[data-reveal]` element:
- *  - "rise" (default): tips up out of the page (rotateX) and comes forward in Z
- *  - "card": swings in from the side like a card being dealt (rotateY + Z), staggered by `data-reveal-i`
- *  - "deep": flies in from far back in Z (headings)
- * Scrubbed, so scrolling back reverses them.
+ * One-shot 3D reveals for every `[data-reveal]` element, played once as it scrolls into view
+ * (cheaper than scrubbing every element on every scroll frame):
+ *  - "rise" (default): tips up out of the page (rotateX)
+ *  - "card": swings in from the side like a card being dealt (rotateY), staggered by `data-reveal-i`
+ *  - "deep": comes forward from depth (headings)
  */
 export function initReveals() {
   const els = gsap.utils.toArray<HTMLElement>('[data-reveal]');
@@ -15,10 +15,10 @@ export function initReveals() {
       const i = Number(el.dataset.revealI || 0);
       const from =
         kind === 'card'
-          ? { rotateY: i % 2 ? -38 : 38, rotateX: 18, z: -380, y: 120, opacity: 0 }
+          ? { rotateY: i % 2 ? -24 : 24, z: -200, y: 60, opacity: 0 }
           : kind === 'deep'
-            ? { z: -700, rotateX: 28, y: 60, opacity: 0 }
-            : { rotateX: 55, z: -220, y: 90, opacity: 0 };
+            ? { z: -300, rotateX: 18, y: 30, opacity: 0 }
+            : { rotateX: 30, y: 50, opacity: 0 };
       gsap.fromTo(
         el,
         { ...from, transformPerspective: 1100, transformOrigin: kind === 'card' ? '50% 100%' : '50% 0%' },
@@ -28,8 +28,11 @@ export function initReveals() {
           z: 0,
           y: 0,
           opacity: 1,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: `top ${98 - Math.min(i, 5) * 3}%`, end: `top ${62 - Math.min(i, 5) * 3}%`, scrub: 0.6 },
+          duration: 0.9,
+          delay: Math.min(i, 5) * 0.08,
+          ease: 'power3.out',
+          clearProps: 'transform',
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
         },
       );
     });

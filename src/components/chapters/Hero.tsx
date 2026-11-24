@@ -42,7 +42,6 @@ export function Hero() {
               style={{
                 opacity: 'clamp(0, (var(--p, 0) - 0.72) * 5, 1)',
                 transform: 'translateZ(calc((1 - clamp(0, (var(--p, 0) - 0.72) * 3.6, 1)) * -900px)) rotateX(calc((1 - clamp(0, (var(--p, 0) - 0.72) * 3.6, 1)) * 40deg))',
-                filter: 'blur(calc((1 - clamp(0, (var(--p, 0) - 0.72) * 3.6, 1)) * 10px))',
               }}
             >
               TONKOTSU YA

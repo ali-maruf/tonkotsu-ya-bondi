@@ -17,7 +17,6 @@ import { Header } from './components/layout/Header';
 import { MobileBar } from './components/layout/MobileBar';
 import { Footer } from './components/layout/Footer';
 import { NorenOpener } from './components/ui/NorenOpener';
-import { SteamDivider } from './components/ui/SteamDivider';
 
 export default function App() {
   const { tier } = useMotion();
@@ -47,9 +46,7 @@ export default function App() {
       <Header />
       <main id="main">
         <Hero />
-        <SteamDivider />
         <Broth />
-        <SteamDivider />
         <NoodlePull />
         <Sushi />
         <NorenOpener n="05" title="On the menu" jp="品書" glyphs={['品書', 'ラーメン']} />
@@ -57,7 +54,6 @@ export default function App() {
         <MenuExplorer />
         <NorenOpener n="07" title="Find us" jp="地図" glyphs={['地図', '豚骨屋']} color={tokens.nori900} />
         <FindUs />
-        <SteamDivider />
         <NorenOpener n="08" title="Reviews" jp="声" glyphs={['声', '豚骨屋']} />
         <Reviews />
       </main>

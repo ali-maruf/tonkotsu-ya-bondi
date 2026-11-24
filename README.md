@@ -33,9 +33,9 @@ src/data/reviews.json               Google rating + 5 reviews (all placeholders)
 src/styles/tokens.css               colour tokens (mirrored for WebGL in src/lib/tokens.ts)
 src/lib/                            hours/open-status, analytics stub, scroll (Lenis + ScrollTrigger), motion tiers
 src/components/chapters/            one component per chapter
-src/components/three/               BowlModel (GLB), noren shader (lazy-loaded)
+src/components/three/               BowlModel (GLB, lazy-loaded)
 public/media/                       Higgsfield photos, video frame sequences, ramen-bowl.glb
-src/components/ui/                  logo, hanko seal, noren, dish art, placeholder chip, lazy stage
+src/components/ui/                  logo, hanko seal, CSS 3D noren, film/frame scrub, dish art, placeholder chip, lazy stage
 src/components/layout/              sticky header, mobile bottom bar, footer
 ```
 
@@ -44,9 +44,9 @@ src/components/layout/              sticky header, mobile bottom bar, footer
 | # | Component | What happens |
 |---|-----------|--------------|
 | 0 | `Preloader` | A hanko stamp presses the bowl mark onto washi. Plays once per session and is skipped for reduced motion. |
-| 1 | `Hero` + `ui/FilmStage` | Pinned for 280vh. The noren swings open in 3D onto a real bowl, then scroll drives a camera orbit around it (91 video frames, forwards and backwards). The headline tips back into depth and the **TONKOTSU YA** wordmark flies forward at the end. |
+| 1 | `Hero` + `ui/FilmStage` | Pinned for 280vh. The noren swings open in 3D onto a real bowl, then scroll drives a camera orbit around it (46 video frames, forwards and backwards). The headline tips back into depth and the **TONKOTSU YA** wordmark flies forward at the end. |
 | 2 | `Broth` + `ui/FilmStage` | Pinned for 220vh. A crane shot rises over the boiling stockpot into the broth as you scroll, while the clock sweeps. |
-| 3 | `NoodlePull` + `ui/FrameScrub` | Pinned for 200vh. A real slow-motion noodle lift (81 video frames) scrubbed by scroll, forwards and backwards. |
+| 3 | `NoodlePull` + `ui/FrameScrub` | Pinned for 200vh. A real slow-motion noodle lift (41 video frames) scrubbed by scroll, forwards and backwards. |
 | 4 | `Sushi` + `ui/FilmStage` | A cream chapter. A macro tracking shot glides along the maki as you scroll. |
 | 5 | `MenuShowcase` | A pinned horizontal gallery. The first card is a **real textured 3D ramen bowl** (`three/BowlModel`, drag to rotate); then the `featured` items in `menu.json` as photos that turn as you scroll. Cards swing through a 3D coverflow as they cross the centre. |
 | 6 | `MenuExplorer` | A category rail of ARIA tabs (arrow keys, Home/End) that crossfades between panels, with a photo per dish. |
@@ -54,7 +54,7 @@ src/components/layout/              sticky header, mobile bottom bar, footer
 | 8 | `Reviews` | Placeholder rating and five placeholder review cards. |
 | – | `Footer` | Charcoal, with the hanko seal, location, hours and the AI-imagery note. |
 
-Chapters 5, 7 and 8 open with a `NorenOpener` band, and the pinned film chapters open with a 3D CSS noren (`ui/CssNoren`, hinged panels on `rotateY`). Headings, tables, cards and reviews below the fold tilt up out of the page in 3D as they scroll in (`data-reveal`, `src/lib/reveal.ts`). `SteamDivider` wisps connect the chapters.
+Chapters 5, 7 and 8 open with a `NorenOpener` band, and the pinned film chapters open with the same 3D CSS noren (`ui/CssNoren`, hinged panels on `rotateY`). Headings, tables, cards and reviews below the fold tilt up out of the page in 3D once as they scroll in (`data-reveal`, `src/lib/reveal.ts`).
 
 ### Realistic media (Higgsfield)
 
@@ -63,14 +63,14 @@ All photographic media was generated with the Higgsfield connector and lives in 
 | Asset | Model | Used in |
 |-------|-------|---------|
 | Hero (16:9 and 9:16), broth, noodle, sushi photos | GPT Image 2.6, 2K | First paint and the static fallback for chapters 1–4 |
-| Hero orbit, broth crane, sushi tracking videos, 5s 720p → ~91 WebP frames each | Seedance 2.5 (start frame = the photo) | Chapters 1, 2, 4 |
+| Hero orbit, broth crane, sushi tracking videos, 5s 720p → 46 WebP frames each (every other frame at 18 fps) | Seedance 2.5 (start frame = the photo) | Chapters 1, 2, 4 |
 | Eight top-down dish photos | GPT Image 2.6 | Showcase and menu explorer, by `visual` |
-| Noodle lift video, 5s 720p → 81 WebP frames | Seedance 2.5 | Chapter 3 |
+| Noodle lift video, 5s 720p → 41 WebP frames | Seedance 2.5 | Chapter 3 |
 | Textured PBR ramen bowl, GLB, 13 MB → 1.0 MB | Meshy image-to-3D, then `gltf-transform` | Showcase 3D card |
 
-**This imagery is illustrative AI art, not photography of Tonkotsu Ya's own dishes.** The footer says so. Replace it with real photos and footage before launch: keep the filenames, or update `src/lib/media.ts`. A real camera move can replace any film: extract frames at ~18 fps, 1280px wide, as `NNN.webp`, and set `count`.
+**This imagery is illustrative AI art, not photography of Tonkotsu Ya's own dishes.** The footer says so. Replace it with real photos and footage before launch: keep the filenames, or update `src/lib/media.ts`. A real camera move can replace any film: extract frames at ~9 fps, 1280px wide, WebP q≈62, as `NNN.webp`, and set `count`.
 
-`FilmStage` + `FrameScrub` draw the frame for the current scroll position to a canvas (cover-fit), so each camera move plays forwards and backwards with the reader. Frames load only when the chapter nears the viewport: every 8th frame first, then the gaps.
+`FilmStage` + `FrameScrub` draw the frame for the current scroll position to a canvas (cover-fit), so each camera move plays forwards and backwards with the reader. Frames load only when the chapter nears the viewport (every 4th frame first, then the gaps). The canvas is drawn at 1x, sized by a ResizeObserver, and its draw loop stops while the chapter is off screen.
 
 ### Conversion system
 
@@ -82,13 +82,14 @@ All photographic media was generated with the Higgsfield connector and lives in 
 
 ### Performance and accessibility
 
+- **One WebGL canvas:** only the showcase bowl uses WebGL; the curtains are CSS 3D. No `filter: blur` or `backdrop-filter` animates while scrolling.
 - **Lazy 3D:** three.js, R3F and drei are only reached through dynamic `import()`. The entry chunk (React, GSAP, Lenis, app) is about 111 KB gzipped. The hero scene waits for page load plus idle, so the LCP element (the `<h1>`) is plain text.
 - **Canvases:** each mounts only near the viewport, unmounts when far away, and pauses (`frameloop="never"`) when off-screen or the tab is hidden.
-- **Media weight:** scene photos are WebP at 1280/1920px (100–220 KB each). The hero photo is the LCP image, with `fetchpriority=high`. Film frames (about 2.5–4 MB per chapter) and the GLB (1 MB) load only when their section nears the viewport.
+- **Media weight:** scene photos are WebP at 1280/1920px (100–220 KB each). The hero photo is the LCP image, with `fetchpriority=high`. Film frames (about 1.2–1.7 MB per chapter, ~6 MB in total) and the GLB (1 MB) load only when their section nears the viewport.
 - **Three tiers** (`src/lib/motion.tsx`):
   - **high / low:** scroll-scrubbed films, 3D noren and reveals; low caps the WebGL DPR at 1.5.
   - **static:** only with `?lite=1` or `?tier=static`. No canvases, no pinning, no smooth scroll; the same photos as plain responsive images.
-  - Reduced motion, Save-Data and missing WebGL drop to **low** and keep the scroll animations (they only move when the visitor scrolls). Without WebGL the 3D bowl and shader noren fall back to a photo and the CSS noren.
+  - Reduced motion, Save-Data and missing WebGL drop to **low** and keep the scroll animations (they only move when the visitor scrolls). Without WebGL the 3D bowl falls back to a photo.
 - **Layout stability:** pinned sections use CSS `position: sticky` with fixed heights, so nothing shifts layout. Scroll progress is scrubbed and reversible.
 - **Accessibility:** skip link, landmarks, AA colour pairs (small accent text on charcoal uses `--vermilion-400`), visible focus rings, decorative canvases marked `aria-hidden` with the same content in real text, and 44px+ tap targets.
 - **Fonts:** Japanese glyphs are decorative only. Noto Sans JP is subset with Google Fonts `text=` to the characters the site uses.

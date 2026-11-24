@@ -6,7 +6,7 @@ const icon = 'h-5 w-5';
 /** Mobile bottom bar: [Call] [Directions] [Order Now]. */
 export function MobileBar() {
   return (
-    <nav aria-label="Quick actions" className="fixed inset-x-0 bottom-0 z-50 border-t border-washi-50/10 bg-charcoal-950/90 backdrop-blur-md md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+    <nav aria-label="Quick actions" className="fixed inset-x-0 bottom-0 z-50 border-t border-washi-50/10 bg-charcoal-950/[0.97] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="grid h-[var(--bottom-bar-h)] grid-cols-[1fr_1fr_1.4fr] items-center gap-2 px-3">
         {PHONE_HREF ? (
           <a href={PHONE_HREF} className="flex flex-col items-center gap-0.5 text-[11px] font-medium text-washi-50/85" data-cta="call" data-cta-location="mobile_bar">

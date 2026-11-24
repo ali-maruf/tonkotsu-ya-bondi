@@ -46,8 +46,8 @@ export const ROUND_DISHES = new Set(['ramen-cream', 'ramen-amber', 'ramen-red', 
 
 export type Frames = { dir: string; count: number; width: number; aspect: number };
 /** Higgsfield (Seedance 2.5) camera-move videos, extracted to WebP frames and scrubbed by scroll. */
-export const HERO_FRAMES: Frames = { dir: '/media/hero-frames', count: 91, width: 1280, aspect: 16 / 9 };
-export const BROTH_FRAMES: Frames = { dir: '/media/broth-frames', count: 91, width: 1280, aspect: 16 / 9 };
-export const SUSHI_FRAMES: Frames = { dir: '/media/sushi-frames', count: 91, width: 1280, aspect: 16 / 9 };
-export const NOODLE_FRAMES: Frames = { dir: '/media/noodle-frames', count: 81, width: 1280, aspect: 16 / 9 };
+export const HERO_FRAMES: Frames = { dir: '/media/hero-frames', count: 46, width: 1280, aspect: 16 / 9 };
+export const BROTH_FRAMES: Frames = { dir: '/media/broth-frames', count: 46, width: 1280, aspect: 16 / 9 };
+export const SUSHI_FRAMES: Frames = { dir: '/media/sushi-frames', count: 46, width: 1280, aspect: 16 / 9 };
+export const NOODLE_FRAMES: Frames = { dir: '/media/noodle-frames', count: 41, width: 1280, aspect: 16 / 9 };
 export const BOWL_MODEL = '/media/ramen-bowl.glb';

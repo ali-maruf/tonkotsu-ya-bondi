@@ -15,7 +15,7 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500 ${solid ? 'border-b border-washi-50/10 bg-charcoal-950/80 backdrop-blur-md' : 'border-b border-transparent'}`}
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-500 ${solid ? 'border-b border-washi-50/10 bg-charcoal-950/95' : 'border-b border-transparent'}`}
       style={{ height: 'var(--header-h)' }}
     >
       <div className="container-x flex h-full items-center justify-between gap-6">
