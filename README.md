@@ -87,7 +87,8 @@ All photographic media was generated with the Higgsfield connector and lives in 
 - **Media weight:** scene photos are WebP at 1280/1920px (100–220 KB each). The hero photo is the LCP image, with `fetchpriority=high`. Film frames (about 2.5–4 MB per chapter) and the GLB (1 MB) load only when their section nears the viewport.
 - **Three tiers** (`src/lib/motion.tsx`):
   - **high / low:** scroll-scrubbed films, 3D noren and reveals; low caps the WebGL DPR at 1.5.
-  - **static:** reduced motion, no WebGL, Save-Data or `?lite=1`. No canvases, no pinning, no smooth scroll; the same photos as plain responsive images.
+  - **static:** only with `?lite=1` or `?tier=static`. No canvases, no pinning, no smooth scroll; the same photos as plain responsive images.
+  - Reduced motion, Save-Data and missing WebGL drop to **low** and keep the scroll animations (they only move when the visitor scrolls). Without WebGL the 3D bowl and shader noren fall back to a photo and the CSS noren.
 - **Layout stability:** pinned sections use CSS `position: sticky` with fixed heights, so nothing shifts layout. Scroll progress is scrubbed and reversible.
 - **Accessibility:** skip link, landmarks, AA colour pairs (small accent text on charcoal uses `--vermilion-400`), visible focus rings, decorative canvases marked `aria-hidden` with the same content in real text, and 44px+ tap targets.
 - **Fonts:** Japanese glyphs are decorative only. Noto Sans JP is subset with Google Fonts `text=` to the characters the site uses.

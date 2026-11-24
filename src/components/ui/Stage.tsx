@@ -36,14 +36,14 @@ export function Stage<P extends object>({
   sceneProps?: P;
   onReady?: () => void;
 }) {
-  const { tier } = useMotion();
+  const { tier, webgl: hasGL } = useMotion();
   const ref = useRef<HTMLDivElement>(null);
   const near = useInView(ref, '120% 0px');
   const onScreen = useInView(ref, '0px');
   const pageVisible = usePageVisible();
   const [Scene, setScene] = useState<SceneComponent<P> | null>(null);
   const [ready, setReady] = useState(false);
-  const webgl = tier !== 'static';
+  const webgl = tier !== 'static' && hasGL;
 
   useEffect(() => {
     if (!webgl || !near || Scene) return;
@@ -80,7 +80,7 @@ export function Stage<P extends object>({
           />
         </div>
       )}
-      {webgl && curtain?.(ready)}
+      {tier !== 'static' && curtain?.(webgl && ready)}
     </div>
   );
 }
