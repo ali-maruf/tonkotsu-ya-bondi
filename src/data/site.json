@@ -1,0 +1,20 @@
+{
+  "name": "Tonkotsu Ya",
+  "branch": "Bondi Junction",
+  "address": {
+    "shop": "{{SHOP_NUMBER}}",
+    "centre": "Eastgate Shopping Centre",
+    "street": "Spring Street",
+    "suburb": "Bondi Junction",
+    "state": "NSW",
+    "postcode": "2022",
+    "country": "AU"
+  },
+  "phone": "{{PHONE}}",
+  "orderUrl": "https://www.ubereats.com/au/store/tonkotsu-ya-bondi/t3vP4pHOQH-jGLhLJ5kjyQ",
+  "services": ["Dine-in", "Takeaway", "Delivery"],
+  "cuisine": ["Japanese", "Ramen"],
+  "brothHours": "{{BROTH_HOURS}}",
+  "story": "{{STORY}}",
+  "siteUrl": "{{SITE_URL}}"
+}

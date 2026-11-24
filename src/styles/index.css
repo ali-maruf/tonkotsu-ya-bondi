@@ -1,0 +1,113 @@
+@import './tokens.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: var(--charcoal-950);
+    color: var(--washi-50);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--header-h);
+  }
+  /* clip (not hidden) so position: sticky keeps working for the pinned chapters */
+  body {
+    @apply font-body antialiased;
+    overflow-x: clip;
+    padding-bottom: calc(var(--bottom-bar-h) + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 768px) {
+    body { padding-bottom: 0; }
+  }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+
+  :focus-visible {
+    outline: 2px solid var(--vermilion-400);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection { background: var(--vermilion-600); color: var(--washi-50); }
+}
+
+@layer components {
+  .label {
+    @apply font-body text-[11px] font-semibold uppercase tracking-label;
+  }
+  .display {
+    @apply font-display font-extrabold leading-[0.95] tracking-[-0.02em];
+  }
+  .jp {
+    @apply font-jp font-bold;
+  }
+  .container-x {
+    @apply mx-auto w-full max-w-content;
+    padding-inline: var(--gutter);
+  }
+  .rule {
+    @apply block h-px w-10 bg-vermilion-600;
+  }
+  .btn {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-6 text-[13px] font-semibold uppercase tracking-[0.14em] transition-[background-color,color,transform,box-shadow] duration-300;
+    transition-timing-function: var(--ease-out);
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    @apply btn bg-vermilion-600 text-washi-50 hover:bg-[#c02f22];
+    box-shadow: 0 10px 30px -12px rgb(215 57 43 / 0.7);
+  }
+  .btn-ghost {
+    @apply btn border border-washi-50/30 text-washi-50 hover:border-washi-50 hover:bg-washi-50/5;
+  }
+  .btn-ghost-dark {
+    @apply btn border border-charcoal-950/25 text-charcoal-950 hover:border-charcoal-950;
+  }
+  /* Visible placeholder chip: anything still awaiting owner confirmation */
+  .ph {
+    @apply rounded border border-dashed px-1.5 py-0.5 font-mono text-[0.78em] font-normal not-italic tracking-normal;
+    border-color: currentColor;
+    opacity: 0.85;
+    word-break: break-all;
+  }
+}
+
+@layer utilities {
+  .h-screen-s { height: 100vh; height: 100svh; }
+  .min-h-screen-s { min-height: 100vh; min-height: 100svh; }
+}
+
+/* Washi paper: subtle fibres for the light chapters */
+.washi-texture {
+  background-color: var(--washi-50);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.06' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.3 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Steam wisps (connective tissue between chapters) */
+@keyframes steam-rise {
+  0% { transform: translate3d(0, 30%, 0) scaleX(0.9); opacity: 0; }
+  25% { opacity: var(--steam-o, 0.5); }
+  100% { transform: translate3d(var(--steam-dx, 12px), -70%, 0) scaleX(1.25); opacity: 0; }
+}
+.steam-wisp {
+  animation: steam-rise var(--steam-dur, 9s) linear infinite;
+  animation-delay: var(--steam-delay, 0s);
+  will-change: transform, opacity;
+}
+
+@keyframes pin-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(2.6); opacity: 0; }
+}
+.pin-pulse { animation: pin-pulse 2.2s var(--ease-out) infinite; }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .steam-wisp { display: none; }
+}

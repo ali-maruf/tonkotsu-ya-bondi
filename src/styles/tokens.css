@@ -1,0 +1,28 @@
+/* Design tokens: Tonkotsu Ya proposed identity. Single source for CSS, Tailwind and the 3D scenes (see src/lib/tokens.ts). */
+:root {
+  --charcoal-950: #141414;
+  --charcoal-800: #262626;
+  --vermilion-600: #d7392b;
+  --vermilion-400: #f06a55;
+  --broth-100: #f3eadb;
+  --washi-50: #faf8f3;
+  --nori-900: #0e1712;
+
+  /* RGB channels of the same tokens, so Tailwind opacity modifiers (bg-washi-50/70) work */
+  --charcoal-950-rgb: 20 20 20;
+  --charcoal-800-rgb: 38 38 38;
+  --vermilion-600-rgb: 215 57 43;
+  --vermilion-400-rgb: 240 106 85;
+  --broth-100-rgb: 243 234 219;
+  --washi-50-rgb: 250 248 243;
+  --nori-900-rgb: 14 23 18;
+
+  --ink-muted-dark: rgb(250 248 243 / 0.68); /* body copy on charcoal, AA */
+  --ink-muted-light: rgb(20 20 20 / 0.7); /* body copy on broth/washi, AA */
+  --rule: rgb(215 57 43 / 0.9);
+
+  --header-h: 64px;
+  --bottom-bar-h: 64px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

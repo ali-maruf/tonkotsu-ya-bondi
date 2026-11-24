@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" role="img" aria-labelledby="t">
+  <title id="t">Tonkotsu Ya, Bondi Junction (proposed identity, pending owner approval)</title>
+  <!-- Bowl-and-steam symbol -->
+  <g fill="none" stroke="#D7392B" stroke-linecap="round" stroke-width="7">
+    <path d="M58 30c-9 10 9 16 0 28M80 22c-10 12 10 19 0 34M102 30c-9 10 9 16 0 28"/>
+  </g>
+  <path d="M24 74h112c0 34-24 58-56 58S24 108 24 74Z" fill="#D7392B"/>
+  <rect x="50" y="136" width="60" height="7" rx="3.5" fill="#D7392B"/>
+  <!-- Wordmark: outline the text before production use -->
+  <text x="164" y="104" font-family="Archivo, 'Space Grotesk', Helvetica, Arial, sans-serif" font-weight="800" font-size="50" letter-spacing="1" fill="#141414">TONKOTSU YA</text>
+  <line x1="164" y1="128" x2="214" y2="128" stroke="#D7392B" stroke-width="1.5"/>
+  <text x="290" y="133" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="600" font-size="13" letter-spacing="4.6" fill="#141414">BONDI JUNCTION</text>
+  <line x1="366" y1="128" x2="416" y2="128" stroke="#D7392B" stroke-width="1.5"/>
+</svg>

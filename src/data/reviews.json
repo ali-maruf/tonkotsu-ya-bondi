@@ -1,0 +1,12 @@
+{
+  "googleRating": "{{GOOGLE_RATING}}",
+  "reviewCount": "{{GOOGLE_REVIEW_COUNT}}",
+  "sourceUrl": "{{GOOGLE_REVIEWS_URL}}",
+  "reviews": [
+    { "id": "r1", "text": "{{REVIEW_1}}", "author": "{{REVIEW_1_AUTHOR}}", "rating": null, "source": "Google" },
+    { "id": "r2", "text": "{{REVIEW_2}}", "author": "{{REVIEW_2_AUTHOR}}", "rating": null, "source": "Google" },
+    { "id": "r3", "text": "{{REVIEW_3}}", "author": "{{REVIEW_3_AUTHOR}}", "rating": null, "source": "Google" },
+    { "id": "r4", "text": "{{REVIEW_4}}", "author": "{{REVIEW_4_AUTHOR}}", "rating": null, "source": "Google" },
+    { "id": "r5", "text": "{{REVIEW_5}}", "author": "{{REVIEW_5_AUTHOR}}", "rating": null, "source": "Google" }
+  ]
+}

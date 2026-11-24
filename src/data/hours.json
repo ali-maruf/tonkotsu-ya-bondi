@@ -1,0 +1,15 @@
+{
+  "timezone": "Australia/Sydney",
+  "placeholder": "{{HOURS}}",
+  "confirmed": false,
+  "_howTo": "Replace each null with a list of 24h ranges, e.g. [{\"open\":\"11:00\",\"close\":\"21:00\"}]. Use [] for a closed day. A close earlier than open runs past midnight.",
+  "days": {
+    "mon": null,
+    "tue": null,
+    "wed": null,
+    "thu": null,
+    "fri": null,
+    "sat": null,
+    "sun": null
+  }
+}

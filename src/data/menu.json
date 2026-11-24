@@ -1,0 +1,154 @@
+{
+  "placeholder": "{{MENU_AND_PRICES}}",
+  "currency": "AUD",
+  "_howTo": "Replace every {{...}} token with the owner-confirmed name, description and price. visual picks the illustration: ramen-cream | ramen-amber | ramen-red | sushi-maki | sushi-nigiri | donburi | small-plate | cup. featured items appear in the Menu Showcase.",
+  "categories": [
+    {
+      "id": "ramen",
+      "label": "Ramen",
+      "jp": "ラーメン",
+      "items": [
+        {
+          "id": "ramen-1",
+          "name": "{{RAMEN_1_NAME}}",
+          "description": "{{RAMEN_1_DESCRIPTION}}",
+          "price": "{{RAMEN_1_PRICE}}",
+          "visual": "ramen-cream",
+          "featured": true
+        },
+        {
+          "id": "ramen-2",
+          "name": "{{RAMEN_2_NAME}}",
+          "description": "{{RAMEN_2_DESCRIPTION}}",
+          "price": "{{RAMEN_2_PRICE}}",
+          "visual": "ramen-amber",
+          "featured": true
+        },
+        {
+          "id": "ramen-3",
+          "name": "{{RAMEN_3_NAME}}",
+          "description": "{{RAMEN_3_DESCRIPTION}}",
+          "price": "{{RAMEN_3_PRICE}}",
+          "visual": "ramen-red",
+          "featured": true
+        },
+        {
+          "id": "ramen-4",
+          "name": "{{RAMEN_4_NAME}}",
+          "description": "{{RAMEN_4_DESCRIPTION}}",
+          "price": "{{RAMEN_4_PRICE}}",
+          "visual": "ramen-cream",
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "sushi",
+      "label": "Sushi",
+      "jp": "寿司",
+      "items": [
+        {
+          "id": "sushi-1",
+          "name": "{{SUSHI_1_NAME}}",
+          "description": "{{SUSHI_1_DESCRIPTION}}",
+          "price": "{{SUSHI_1_PRICE}}",
+          "visual": "sushi-maki",
+          "featured": true
+        },
+        {
+          "id": "sushi-2",
+          "name": "{{SUSHI_2_NAME}}",
+          "description": "{{SUSHI_2_DESCRIPTION}}",
+          "price": "{{SUSHI_2_PRICE}}",
+          "visual": "sushi-nigiri",
+          "featured": true
+        },
+        {
+          "id": "sushi-3",
+          "name": "{{SUSHI_3_NAME}}",
+          "description": "{{SUSHI_3_DESCRIPTION}}",
+          "price": "{{SUSHI_3_PRICE}}",
+          "visual": "sushi-maki",
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "meals",
+      "label": "Japanese Meals",
+      "jp": "定食",
+      "items": [
+        {
+          "id": "meals-1",
+          "name": "{{MEALS_1_NAME}}",
+          "description": "{{MEALS_1_DESCRIPTION}}",
+          "price": "{{MEALS_1_PRICE}}",
+          "visual": "donburi",
+          "featured": false
+        },
+        {
+          "id": "meals-2",
+          "name": "{{MEALS_2_NAME}}",
+          "description": "{{MEALS_2_DESCRIPTION}}",
+          "price": "{{MEALS_2_PRICE}}",
+          "visual": "donburi",
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "sides",
+      "label": "Sides",
+      "jp": "一品",
+      "items": [
+        {
+          "id": "sides-1",
+          "name": "{{SIDES_1_NAME}}",
+          "description": "{{SIDES_1_DESCRIPTION}}",
+          "price": "{{SIDES_1_PRICE}}",
+          "visual": "small-plate",
+          "featured": false
+        },
+        {
+          "id": "sides-2",
+          "name": "{{SIDES_2_NAME}}",
+          "description": "{{SIDES_2_DESCRIPTION}}",
+          "price": "{{SIDES_2_PRICE}}",
+          "visual": "small-plate",
+          "featured": false
+        },
+        {
+          "id": "sides-3",
+          "name": "{{SIDES_3_NAME}}",
+          "description": "{{SIDES_3_DESCRIPTION}}",
+          "price": "{{SIDES_3_PRICE}}",
+          "visual": "small-plate",
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "label": "Drinks",
+      "jp": "飲み物",
+      "items": [
+        {
+          "id": "drinks-1",
+          "name": "{{DRINKS_1_NAME}}",
+          "description": "{{DRINKS_1_DESCRIPTION}}",
+          "price": "{{DRINKS_1_PRICE}}",
+          "visual": "cup",
+          "featured": false
+        },
+        {
+          "id": "drinks-2",
+          "name": "{{DRINKS_2_NAME}}",
+          "description": "{{DRINKS_2_DESCRIPTION}}",
+          "price": "{{DRINKS_2_PRICE}}",
+          "visual": "cup",
+          "featured": false
+        }
+      ]
+    }
+  ]
+}
